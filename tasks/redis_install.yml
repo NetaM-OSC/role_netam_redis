@@ -13,6 +13,22 @@
 - name: redis_install | build redis
   shell: /tmp/build_redis.sh
 
+- name: redis_install | copy binary
+  copy:
+    src: '/usr/local/src/redis/redis-{{ d_redis_version }}/src/{{ item }}'
+    dest: '/usr/local/bin/{{ item }}'
+    remote_src: yes
+    mode: '0755'
+    owner: "{{ v_redis['user'] }}"
+    group: "{{ v_redis['group'] }}"
+  with_items:
+    - 'redis-benchmark'
+    - 'redis-check-aof'
+    - 'redis-check-rdb'
+    - 'redis-cli'
+    - 'redis-sentinel'
+    - 'redis-server'
+
 - name: redis_install | set rights on redis folder
   file:
     path: "{{ v_redis['home_dir'] }}"
