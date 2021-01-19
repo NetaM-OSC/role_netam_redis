@@ -1,0 +1,14 @@
+---
+- name: redis_config | configure redis
+  replace:
+    path: '/etc/redis/redis.conf'
+    regexp: '{{ item.regexp }}'
+    replace: '{{ item.repl }}'
+    backup: yes
+  with_items:
+    - { regexp: '^daemonize no', repl: 'daemonize yes' }
+    - { regexp: '^supervised no', repl: 'supervised systemd' }
+    - { regexp: '^logfile ""', repl: 'logfile "/var/log/redis/redis.log"' }
+    - { regexp: '^dir \./', repl: 'dir /usr/local/redis/' }
+    - { regexp: '^bind 127.0.0.1', repl: 'bind 0.0.0.0' }
+  notify: redis restart

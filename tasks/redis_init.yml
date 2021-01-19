@@ -1,0 +1,34 @@
+---
+- name: redis_init | ensure required folders exists
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ v_redis['home_dir'] }}"
+    - "{{ v_redis['home_dir'] }}/archives"
+    - "/etc/redis"
+    - "/usr/local/redis"
+    - "/var/log/redis"
+    - "/var/log/redis/archives"
+
+- name: redis_init | create system group for redis
+  group:
+    name: "{{ v_redis['group'] }}"
+    system: yes
+    state: present
+
+- name: redis_init | create system user for redis
+  user:
+    name: "{{ v_redis['user'] }}"
+    group: "{{ v_redis['group'] }}"
+    home: "{{ v_redis['home_dir'] }}"
+    system: yes
+    state: present
+    shell: '/bin/bash'
+
+- name: redis_init | fix rights on redis log folder
+  file:
+    path: "/var/log/redis/"
+    owner: "{{ v_redis['user'] }}"
+    group: "{{ v_redis['group'] }}"
+    recurse: yes

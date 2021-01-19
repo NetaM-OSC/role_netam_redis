@@ -1,0 +1,19 @@
+---
+- name: redis_post | deploy logrotate configuration
+  copy:
+    src: logrotate-redis
+    dest: '/etc/logrotate.d/redis'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: redis_post | copy redis configuration to right location
+  copy:
+    src: "{{ v_redis['home_dir'] }}/redis-{{ d_redis_version }}/redis.conf"
+    dest: '/etc/redis/redis.conf'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+    backup: yes
+    remote_src: yes
+  notify: redis restart

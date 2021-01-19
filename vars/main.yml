@@ -1,0 +1,5 @@
+---
+v_redis:
+  home_dir: '/usr/local/src/redis'
+  user: 'redis'
+  group: 'redis'

@@ -1,0 +1,37 @@
+---
+- name: redis_install | deploy build script
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0700'
+  with_items:
+    - { src: 'scripts/build_redis.sh.j2', dest: '/tmp/build_redis.sh' }
+    - { src: 'scripts/test_redis_build.sh.j2', dest: '/tmp/test_redis_build.sh' }
+
+- name: redis_install | build redis
+  shell: /tmp/build_redis.sh
+
+- name: redis_install | set rights on redis folder
+  file:
+    path: "{{ v_redis['home_dir'] }}"
+    owner: "{{ v_redis['user'] }}"
+    group: "{{ v_redis['group'] }}"
+    recurse: yes
+
+- name: redis_install | remove build script
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/build_redis.sh
+    - /tmp/test_redis_build.sh
+
+- name: redis_post | deploy systemd unit
+  template:
+    src: 'systemd/redis-server.service.j2'
+    dest: '/usr/lib/systemd/system/redis-server.service'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'

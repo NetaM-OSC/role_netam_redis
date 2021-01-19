@@ -1,0 +1,40 @@
+---
+- name: import check os
+  import_tasks: check_os.yml
+  tags:
+    - always
+
+- name: import centos prerequisites
+  import_tasks: centos_prerequisites.yml
+  tags:
+    - always
+
+- name: import redis init
+  import_tasks: redis_init.yml
+  tags:
+    - always
+
+- name: import redis download
+  import_tasks: redis_download.yml
+  tags:
+    - install
+
+- name: import redis install
+  import_tasks: redis_install.yml
+  tags:
+    - install
+
+- name: import redis post
+  import_tasks: redis_post.yml
+  tags:
+    - install
+
+- name: import redis configure
+  import_tasks: redis_config.yml
+  tags:
+    - always
+
+- name: import redis firewall
+  import_tasks: redis_firewall.yml
+  tags:
+    - always

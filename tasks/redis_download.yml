@@ -1,0 +1,21 @@
+---
+- name: redis_download | download redis {{ d_redis_version }} source archive
+  get_url:
+    url: "{{ d_redis_url }}"
+    dest: "{{ v_redis['home_dir'] }}/archives"
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+
+- name: redis_download | cleanup existing installation
+  file:
+    path: "{{ v_redis['home_dir'] }}/redis-{{ d_redis_version }}"
+    state: absent
+
+- name: redis_download | extract redis archive
+  unarchive:
+    src: "{{ v_redis['home_dir'] }}/archives/{{ d_redis_package }}"
+    dest: "{{ v_redis['home_dir'] }}"
+    owner: 'root'
+    group: 'root'
+    remote_src: yes

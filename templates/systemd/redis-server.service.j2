@@ -1,0 +1,26 @@
+[Unit]
+Description=Redis data structure server
+Documentation=https://redis.io/documentation
+#AssertPathExists=/var/lib/redis
+After=network.target
+
+
+[Service]
+ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=always
+LimitNOFILE=10032
+NoNewPrivileges=yes
+#OOMScoreAdjust=-900
+#PrivateTmp=yes
+#Type=notify
+# Note that notify will fail. Instead, it will be started in forking mode. Let the main process copy a sub process for execution
+Type=forking
+#TimeoutStartSec=100
+#TimeoutStopSec=100
+UMask=0077
+User={{ v_redis['user'] }}
+Group={{ v_redis['group'] }}
+
+[Install]
+WantedBy=multi-user.target
