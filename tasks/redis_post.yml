@@ -17,3 +17,12 @@
     backup: yes
     remote_src: yes
   notify: redis restart
+
+- name: redis_post | ensure folder rights
+  file:
+    path: '{{ item }}'
+    owner: "{{ v_redis['user'] }}"
+    group: "{{ v_redis['group'] }}"
+  with_items:
+    - '/var/log/redis'
+    - '/usr/local/bin'
