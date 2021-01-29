@@ -1,4 +1,7 @@
 ---
+# @var d_redis_version: 6.0.9 # Redis version to install
 d_redis_version: 6.0.9
+# @var d_redis_package: redis-{{ d_redis_version }}.tar.gz # Redis artifact name
 d_redis_package: redis-{{ d_redis_version }}.tar.gz
+# @var d_redis_url: https://download.redis.io/releases/{{ d_redis_package }} # Redis download URL
 d_redis_url: https://download.redis.io/releases/{{ d_redis_package }}
